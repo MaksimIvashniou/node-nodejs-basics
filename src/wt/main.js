@@ -29,10 +29,14 @@ const performCalculations = async () => {
     );
   }
 
-  Promise.all(promises).then((result) => {
-    console.log(result);
-    process.exit();
-  });
+  Promise.allSettled(promises)
+    .then((results) => {
+      return results.map((result) => result.reason || result.value);
+    })
+    .then((results) => {
+      console.log(results);
+      process.exit();
+    });
 };
 
 await performCalculations();
